@@ -1,0 +1,99 @@
+---
+title: "ESM 206 Lab 6"
+author: "Julia Wilson"
+date: "11/1/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(palmerpenguins)
+library(broom)
+library(equatiomatic)
+```
+
+## Example of a rank-based test 
+
+We'll make our own samples, using a pseudorandom generator. 
+
+Notes: 
+telling it what you want to maximum value to be 
+random sample of values between 0 - 20 
+set.seed allows us to all have the same random sample, good for reproducibility
+set.seed(the number here is where you are starting from); 
+- tell r to create a random sample of integer values, there's a huge sequence of values where it could start from, where the starting point is. Settting the seed allows us to say "if you are oulling form this giant sequence, I want you to start at 1414 or 2." Starting point of values from where vector is pulled. 
+replace = once a value of observatio is removed, the observation value is put back into the pool. This is why there are multiple 7s, 17s etc. 
+- pseudo random bc once you set seed it's not truly random \
+- try not to use a single random sample, but a bunch of random samples together 
+- the sample. int(#) is the max number your sequence can go to 
+
+```{r}
+set.seed(1414)
+gp_1 <- sample.int(20, size = 15, replace = TRUE)
+
+set.seed(1424)
+gp_2 <- sample.int(30, size = 15, replace = TRUE)
+```
+
+Create quick histrograms. These shows not a normal distribution in gp_1. gp_2 is uniform, but not necessarily normally distributed. 
+
+```{r}
+hist(gp_1)
+
+hist(gp_2)
+```
+
+Try a t-test: 
+```{r}
+t.test(gp_1, gp_2)
+```
+Meaning of p value: The p value indicates that if these samples were draw from population with the same mean, then there is a 19.8% chance of taking two random that the samples that are at least as different as the sample means we found by random chance. 
+
+If these samples were drawn from populations with the same mean, the prob of taking two random samples with means *at least as different* as the sample means we found by random chance (taking into account spread, n) is 19.8%
+
+Super likely null hypothesis is true and that we will get these 
+
+Retain or fail to reject the null hypothesis >> There is no significant difference in means between group 1 and group 2. 
+
+Warning: people get weirdly upset if you say "accept" the null 
+
+Now let's compare this outcome to a rank-based test. 
+
+## Mann Whitney U unparied rank-based test 
+
+often recorded as a comparison of medians 
+if we have matching values, then you get tie in the ranks and then there is just an approximation made when you do the calculation 
+
+```{r}
+mwu <- wilcox.test(gp_1, gp_2)
+
+mwu 
+```
+
+If these samples were drawn from populations with the same ranks (medians), the
+probability of taking two random samples with ranks at least as different as the
+sample ranks we found by random chance is 0.28. 
+
+Is that so unlikely to have happened that my difference in rank of my samples, that i should reject my hypothesis? 
+
+28% of the time is very likely that these samples are drawn from populations with the same ranks or medians. 
+
+There is no significant difference in ranks between group 1 and group 2 (statistical summary).
+
+Median scores for group 1 (M = 14) and group 2 (M = 12) did not differ significantly (Mann Whitney U test: U(df) = 86, p = 0.28).
+
+If you chose what the appropriate type of stats hypothesis, then every other metric should align. Don't report median as central tendancy and then use t test using a mean. Make sure what appropriate test to use that it aligns with everything else you are presenting. Also true for data visualization. 
+
+
+
+
+
+
+
+
+
+
+
+
+
