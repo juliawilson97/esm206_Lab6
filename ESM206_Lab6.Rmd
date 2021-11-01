@@ -85,11 +85,70 @@ Median scores for group 1 (M = 14) and group 2 (M = 12) did not differ significa
 
 If you chose what the appropriate type of stats hypothesis, then every other metric should align. Don't report median as central tendancy and then use t test using a mean. Make sure what appropriate test to use that it aligns with everything else you are presenting. Also true for data visualization. 
 
+Where do you find what names are given to each output that will allow you to refer to them in in line code... 
+ # ?wilcox.test 
+ scroll to the values section to see the different pieces in the text 
+ 
+ If I wanted to pull p value: 
+ nameoffile$p.value 
+ 
+ If you have more than 3 samples, kruskal.test 
+ 
+ ## Linear regression (single dependent variable, a single independent variable)
+ 
+ 
+```{r, include = TRUE}
+ggplot(data = penguins, aes(x = flipper_length_mm, y = body_mass_g)) +
+  geom_point() + 
+  geom_smooth (method = "lm")
+```
+
+Notes: 
+Does it look like a linear relationship makes sense? 
+Are there notable outliers that concern you about how they weight the model? 
+
+Find a linear regression model using ordinary least squares describing the relationship between flipper length and body mass. 
+
+Notes: 
+3 pieces: 
+1) type of model - nonlinear, generalized additive model... etc 
+2) What is the relationship to model (DV ~ IV(s))
+3) Where is the data that is used to create this model? 
 
 
+lm(dependent variable)
+
+```{r}
+penguin_lm <- lm(body_mass_g ~ flipper_length_mm, data = penguins)
+```
+
+What does this mean? 
+y = mx + b 
+y = B1x + Bo + E 
+model body mass as a function of flipper length 
+These are linearly related, and there is some error (E)
+Body mass = coefficient of associated variable (41.7) * predicted variable of flipper length (-5780.8) 
+
+The 41.7 or coefficient of flipper length. This is the slope that relates flipper length to body mass 
+
+One unit increase in flipper length, expect a 49.7g increase in body mass 
+
+Units would be g/mm for coefficient of flipper length
+y intercept is not actually meaningful, it is just the starting point on the y axis 
+
+All models are wrong and extrapolation is risky 
+We need to be clear what the range is that we expect the model to be valid 
+
+### broom package returns model outputs as tidy data frames 
+
+```{r}
+penguin_lm_tidy <- broom::tidy(penguin_lm)
+
+penguin_lm_tidy
+```
 
 
-
+broom:: just tells you it comes from the broom package
 
 
 
