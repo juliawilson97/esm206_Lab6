@@ -2,7 +2,9 @@
 title: "ESM 206 Lab 6"
 author: "Julia Wilson"
 date: "11/1/2021"
-output: html_document
+output: 
+  html_document: 
+    theme: readable
 ---
 
 ```{r setup, include=FALSE}
@@ -145,13 +147,35 @@ We need to be clear what the range is that we expect the model to be valid
 penguin_lm_tidy <- broom::tidy(penguin_lm)
 
 penguin_lm_tidy
+
+boom::glance(penguin_lm) #Will talk about this on Wednesday
 ```
 
+broom:: just tells you it comes from the broom package, you don't need it 
 
-broom:: just tells you it comes from the broom package
+How can I include my model equation in a report? 
 
+```{r}
+extract_eq(model = penguin_lm, use_coefs = TRUE)
+```
 
+```{r}
+plot(penguin_lm)
+```
 
+If you use plot on linear model outcome then it will produce diagnostic plots that you can decide are helpful or not
+
+How far points are to what the module predicts. Are they somewhat and evenly spread around the predicted line. In this example, yes! 
+
+Example 2 QQ Plot: When we talk about normality, we are talking about the value of the residuals. When we do linear regression, one of the assumptions is the normality of residual. Diff between observation & prediction, are the residuals normally distributed. This example is perfect. 
+
+Example 3: Consitant spread across the model 
+
+Example 4: Measure of weight or leverage of any point. Considers outliers. What points seem to be most impacting the model outputs. Are there any points that have disproportionate weight? This one point seems to be havin gmore weight. Can't look at this plot and just remove the outliers. The only reason to remove is if the outier is not representative of the data.
+
+heterosadasticity: variance of risidual is not consistant over the course of the fitted model 
+
+homosadasticity: variance of risiduals stay relatively constant throughout duration of model 
 
 
 
